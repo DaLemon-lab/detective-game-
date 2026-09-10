@@ -358,6 +358,27 @@
       padding: 1px 6px;
     }
   }
+  body.layout-desktop .suspect-card.eliminated::after{
+    content:"CLEARED";
+    top: 50%; left: 50%; right:auto;
+    transform: translate(-50%,-50%) rotate(-12deg);
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--maroon);
+    opacity: 0.6;
+    border: 1.5px solid var(--maroon);
+    padding: 1px 6px;
+  }
+  body.layout-phone .suspect-card.eliminated::after{
+    content:"X";
+    top: 2px; left:auto; right: 4px;
+    transform:none;
+    font-size: 11px;
+    letter-spacing: normal;
+    border: none;
+    padding: 0;
+    opacity: 1;
+  }
 
   /* --- Hints page --- */
   .hint-list{
@@ -540,6 +561,8 @@
   }
 
   @media (max-width: 640px){
+    body{ padding: 10px; }
+    .masthead{ margin-bottom: 8px; }
     .book{ flex-direction:column; padding: 8px;}
     .tabs{
       flex-direction:row;
@@ -557,7 +580,7 @@
     .tab.active{ transform:none; }
     .page-frame{ padding: 14px 12px; }
     select{ min-width: 0; flex:1; }
-    .book{ min-height: 0; }
+    .book{ min-height: 70svh; min-height: 70vh; }
     .suspect-grid{
       grid-auto-flow: row;
       grid-template-rows: none;
@@ -569,7 +592,79 @@
     .suspect-card .name{ font-size: 11px; }
     .suspect-card .num{ font-size: 8px; }
     .case-text::first-letter{ font-size: 34px; }
+    .nav-row{ flex-wrap:wrap; justify-content:center; gap:10px; }
+    .nav-row .stamp{ order:3; width:100%; text-align:center; }
+    .style-grid{ grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
   }
+
+  /* --- Manual layout override (Settings > Display Mode) --- */
+  body.layout-phone{ padding: 10px; }
+  body.layout-phone .masthead{ margin-bottom: 8px; }
+  body.layout-phone .book{ flex-direction:column; padding: 8px; min-height:0; }
+  body.layout-phone .tabs{
+    flex-direction:row;
+    padding: 0 0 8px 0;
+    overflow-x:auto;
+  }
+  body.layout-phone .tab{
+    writing-mode: horizontal-tb;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid #6f4f18;
+    border-bottom:none;
+    transform:none;
+    white-space:nowrap;
+  }
+  body.layout-phone .tab.active{ transform:none; }
+  body.layout-phone .page-frame{ padding: 14px 12px; }
+  body.layout-phone select{ min-width: 0; flex:1; }
+  body.layout-phone .suspect-grid{
+    grid-auto-flow: row;
+    grid-template-rows: none;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+  body.layout-phone .suspect-card{ min-height: 36px; padding: 5px 6px; }
+  body.layout-phone .suspect-card .name{ font-size: 11px; }
+  body.layout-phone .suspect-card .num{ font-size: 8px; }
+  body.layout-phone .case-text::first-letter{ font-size: 34px; }
+  body.layout-phone .nav-row{ flex-wrap:wrap; justify-content:center; gap:10px; }
+  body.layout-phone .nav-row .stamp{ order:3; width:100%; text-align:center; }
+  body.layout-phone .style-grid{ grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+
+  body.layout-desktop{ padding: 24px; }
+  body.layout-desktop .book{ flex-direction:row; padding: 10px; min-height:560px; }
+  body.layout-desktop .tabs{
+    flex-direction:column;
+    padding: 46px 0 0 0;
+    overflow-x:visible;
+  }
+  body.layout-desktop .tab{
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    border-radius: 0 6px 6px 0;
+    border: 1px solid #6f4f18;
+    border-left: none;
+    transform: translateX(-2px);
+    white-space:normal;
+  }
+  body.layout-desktop .tab.active{ transform: translateX(8px); }
+  body.layout-desktop .page-frame{ padding: 28px 32px 24px 32px; }
+  body.layout-desktop select{ min-width: 220px; flex:none; }
+  body.layout-desktop .suspect-grid{
+    grid-auto-flow: column;
+    grid-template-rows: repeat(auto-fill, minmax(42px, 1fr));
+    grid-template-columns: none;
+    grid-auto-columns: 148px;
+    overflow-x:auto;
+    overflow-y:hidden;
+  }
+  body.layout-desktop .suspect-card{ min-height: 42px; padding: 6px 8px; }
+  body.layout-desktop .suspect-card .name{ font-size: 12.5px; }
+  body.layout-desktop .suspect-card .num{ font-size: 8.5px; }
+  body.layout-desktop .case-text::first-letter{ font-size: 46px; }
+  body.layout-desktop .nav-row{ flex-wrap:nowrap; justify-content:space-between; }
+  body.layout-desktop .nav-row .stamp{ order:0; width:auto; text-align:left; }
 </style>
 </head>
 <body>
@@ -634,6 +729,16 @@
             <input type="number" id="customCount" min="1" max="2000" value="10">
             <span class="settings-note">1&ndash;2000 suspects</span>
           </div>
+        </div>
+
+        <div class="settings-block">
+          <label class="settings-label">Display Mode</label>
+          <div class="pill-grid" id="layoutModeGrid">
+            <button class="pill-btn active" data-layout="auto">Auto</button>
+            <button class="pill-btn" data-layout="phone">Phone</button>
+            <button class="pill-btn" data-layout="desktop">Desktop</button>
+          </div>
+          <p class="settings-note">Auto follows your screen size. Phone forces the compact mobile layout on any device; Desktop forces the wide layout.</p>
         </div>
 
         <div class="settings-block">
@@ -774,7 +879,8 @@
     difficulty: 'peaceful',
     customCount: 10,
     firstOnly: false,
-    theme: 'dossier'
+    theme: 'dossier',
+    layout: 'auto'
   };
 
   function requestedCount(){
@@ -1123,6 +1229,10 @@
       ? `Limited to ${maxFirstOnly} unique first names.`
       : `Full names allow up to ${FIRST_NAMES.length * LAST_NAMES.length - 1} unique combinations.`;
 
+    document.getElementById('layoutModeGrid').querySelectorAll('.pill-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.layout === settings.layout);
+    });
+
     const styleGrid = document.getElementById('styleGrid');
     styleGrid.innerHTML = '';
     THEMES.forEach(t => {
@@ -1149,12 +1259,27 @@
     renderSettingsPanel();
   });
 
+  document.getElementById('layoutModeGrid').addEventListener('click', e => {
+    const btn = e.target.closest('.pill-btn');
+    if(!btn) return;
+    settings.layout = btn.dataset.layout;
+    applyLayoutClass();
+    renderSettingsPanel();
+  });
+
+  function applyLayoutClass(){
+    document.body.classList.remove('layout-phone', 'layout-desktop');
+    if(settings.layout === 'phone') document.body.classList.add('layout-phone');
+    else if(settings.layout === 'desktop') document.body.classList.add('layout-desktop');
+  }
+
   document.getElementById('applySettingsBtn').addEventListener('click', newCase);
 
   /* ---------------------------------------------------------------- */
   /* Init                                                               */
   /* ---------------------------------------------------------------- */
   document.documentElement.setAttribute('data-theme', settings.theme);
+  applyLayoutClass();
   renderSettingsPanel();
   newCase();
 
