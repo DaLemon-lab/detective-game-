@@ -19,6 +19,82 @@
     --shadow: rgba(36,29,22,0.35);
   }
 
+  [data-theme="textbook"]{
+    --paper:#faf7f0; --paper-dark:#eef0f5; --paper-edge:#c9ced9;
+    --ink:#1b1f2a; --ink-soft:#454c5c;
+    --maroon:#1d3d6b; --maroon-dark:#142944;
+    --brass:#3f6fb3; --brass-light:#6d94cc;
+    --line:#9aa5b8;
+  }
+
+  [data-theme="noir"]{
+    --paper:#161616; --paper-dark:#1f1f1f; --paper-edge:#333333;
+    --ink:#e8e4da; --ink-soft:#b7b2a4;
+    --maroon:#b91c1c; --maroon-dark:#7f1414;
+    --brass:#8a8a8a; --brass-light:#bdbdbd;
+    --line:#3a3a3a;
+  }
+
+  [data-theme="newspaper"]{
+    --paper:#eee9e0; --paper-dark:#e0dbd0; --paper-edge:#c7c0af;
+    --ink:#111111; --ink-soft:#3d3a34;
+    --maroon:#8a1f1f; --maroon-dark:#5c1414;
+    --brass:#555555; --brass-light:#777777;
+    --line:#999999;
+  }
+  [data-theme="newspaper"] .case-text{ column-count:1; }
+  @media(min-width:700px){
+    [data-theme="newspaper"] .case-text{ column-count:2; column-gap:26px; }
+    [data-theme="newspaper"] .case-text::first-letter{ font-size:54px; }
+  }
+
+  [data-theme="corkboard"]{
+    --paper:#c9a06a; --paper-dark:#b98f57; --paper-edge:#8a6836;
+    --ink:#2b1d0f; --ink-soft:#4d3a22;
+    --maroon:#a12a2a; --maroon-dark:#7a1f1f;
+    --brass:#7a5a34; --brass-light:#9c7c4e;
+    --line:#7a5a34;
+  }
+  [data-theme="corkboard"] .page-frame{
+    background:
+      radial-gradient(circle at 8% 15%, rgba(0,0,0,0.08) 0, rgba(0,0,0,0.08) 2px, transparent 3px),
+      radial-gradient(circle at 72% 55%, rgba(0,0,0,0.08) 0, rgba(0,0,0,0.08) 2px, transparent 3px),
+      radial-gradient(circle at 38% 88%, rgba(0,0,0,0.08) 0, rgba(0,0,0,0.08) 2px, transparent 3px),
+      radial-gradient(circle at 90% 92%, rgba(0,0,0,0.08) 0, rgba(0,0,0,0.08) 2px, transparent 3px),
+      var(--paper);
+  }
+  [data-theme="corkboard"] .suspect-card{ box-shadow:1px 3px 5px rgba(0,0,0,0.35); }
+  [data-theme="corkboard"] .suspect-card:nth-child(3n){ transform:rotate(-2deg); }
+  [data-theme="corkboard"] .suspect-card:nth-child(3n+1){ transform:rotate(1.5deg); }
+  [data-theme="corkboard"] .suspect-card:nth-child(3n+2){ transform:rotate(-1deg); }
+  [data-theme="corkboard"] .suspect-card:hover{ transform:scale(1.04) rotate(0deg); }
+
+  [data-theme="terminal"]{
+    --paper:#05130a; --paper-dark:#0a1f12; --paper-edge:#123b1f;
+    --ink:#a9ffb0; --ink-soft:#5fd67a;
+    --maroon:#ff4d4d; --maroon-dark:#c22e2e;
+    --brass:#3ddc61; --brass-light:#63f086;
+    --line:#123b1f;
+  }
+  [data-theme="terminal"] .book,
+  [data-theme="terminal"] .book *{
+    font-family:'Courier New', monospace !important;
+  }
+  [data-theme="terminal"] .page-frame::after{
+    content:"";
+    position:absolute; inset:0;
+    pointer-events:none;
+    background: repeating-linear-gradient(180deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+  }
+
+  [data-theme="gothic"]{
+    --paper:#2a2018; --paper-dark:#1e1712; --paper-edge:#5a4a30;
+    --ink:#e9dfc4; --ink-soft:#b9ac8a;
+    --maroon:#7a1f2b; --maroon-dark:#4c1219;
+    --brass:#c9a34d; --brass-light:#e0bd6e;
+    --line:#5a4a30;
+  }
+
   *{box-sizing:border-box;}
 
   html,body{
@@ -129,8 +205,8 @@
     content:"";
     position:absolute; inset:0;
     background:
-      radial-gradient(ellipse at 85% -10%, rgba(107,30,35,0.06), transparent 40%),
-      radial-gradient(ellipse at -10% 110%, rgba(107,30,35,0.05), transparent 40%);
+      radial-gradient(ellipse at 85% -10%, rgba(0,0,0,0.05), transparent 40%),
+      radial-gradient(ellipse at -10% 110%, rgba(0,0,0,0.05), transparent 40%);
     pointer-events:none;
   }
 
@@ -207,64 +283,80 @@
   .suspect-note{
     font-size: 13px;
     color: var(--ink-soft);
-    margin-bottom: 14px;
+    margin-bottom: 10px;
+  }
+  .suspect-note.clamp-note{
+    color: var(--maroon);
   }
   .suspect-grid{
     display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-    gap: 12px;
-    overflow-y:auto;
-    padding-right: 4px;
+    flex:1;
+    min-height:0;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(auto-fill, minmax(42px, 1fr));
+    grid-auto-columns: 148px;
+    gap: 7px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding-bottom: 8px;
   }
   .suspect-card{
     position:relative;
     display:flex;
     flex-direction:column;
     justify-content:center;
-    min-height: 58px;
+    min-height: 42px;
     border: 1px solid var(--line);
     background: var(--paper-dark);
-    padding: 10px 14px;
+    padding: 6px 8px;
     cursor:pointer;
     user-select:none;
     transition: background .15s ease, transform .1s ease;
     overflow:hidden;
   }
-  .suspect-card:hover{ background: #d9c692; }
-  .suspect-card:active{ transform: scale(0.98); }
+  .suspect-card:hover{ filter: brightness(1.06); }
+  .suspect-card:active{ transform: scale(0.97); }
   .suspect-card .num{
     font-family:'Courier New', monospace;
-    font-size: 10px;
+    font-size: 8.5px;
     line-height: 1;
     color: var(--maroon);
-    margin-bottom: 5px;
+    margin-bottom: 3px;
   }
   .suspect-card .name{
     display:block;
-    font-size: 15px;
+    font-size: 12.5px;
     line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
   .suspect-card.eliminated{
-    color: #948872;
+    color: var(--ink-soft);
     text-decoration: line-through;
-    background: #e6dbb9;
+    opacity: 0.6;
   }
   .suspect-card.eliminated::after{
-    content:"CLEARED";
+    content:"X";
     position:absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%) rotate(-12deg);
+    top: 2px; right: 4px;
     font-family: Georgia, serif;
     font-weight:700;
-    font-size: 15px;
-    letter-spacing: 3px;
-    color: rgba(107,30,35,0.55);
-    border: 2px solid rgba(107,30,35,0.55);
-    padding: 2px 8px;
+    font-size: 11px;
+    color: var(--maroon);
     pointer-events:none;
+  }
+  @media (min-width: 641px){
+    .suspect-card.eliminated::after{
+      content:"CLEARED";
+      top: 50%; left: 50%; right:auto;
+      transform: translate(-50%,-50%) rotate(-12deg);
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--maroon);
+      opacity: 0.6;
+      border: 1.5px solid var(--maroon);
+      padding: 1px 6px;
+    }
   }
 
   /* --- Hints page --- */
@@ -352,6 +444,85 @@
     font-size: 16px;
   }
 
+  /* --- Settings page --- */
+  .settings-block{ margin-bottom: 22px; }
+  .settings-label{
+    display:block;
+    font-family:'Courier New', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--maroon);
+    margin-bottom: 8px;
+  }
+  .pill-grid{ display:flex; flex-wrap:wrap; gap:8px; }
+  .pill-btn{
+    font-family: Georgia, serif;
+    font-size: 13px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    background: var(--paper-dark);
+    color: var(--ink);
+    cursor:pointer;
+    border-radius: 3px;
+    transition: background .15s ease;
+  }
+  .pill-btn:hover{ filter: brightness(1.08); }
+  .pill-btn.active{
+    background: var(--maroon);
+    color: var(--paper);
+    border-color: var(--maroon-dark);
+  }
+  .custom-count-row{
+    margin-top: 10px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    font-size: 13px;
+    flex-wrap:wrap;
+  }
+  .custom-count-row input{
+    font-family: Georgia, serif;
+    font-size: 14px;
+    padding: 7px 9px;
+    width: 110px;
+    border: 1px solid var(--line);
+    background: var(--paper-dark);
+    color: var(--ink);
+  }
+  .style-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 10px;
+  }
+  .style-swatch{
+    border: 2px solid var(--line);
+    border-radius: 4px;
+    padding: 9px 8px;
+    cursor:pointer;
+    text-align:center;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    background: var(--paper-dark);
+    color: var(--ink);
+  }
+  .style-swatch .chip{
+    height: 24px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    border: 1px solid rgba(0,0,0,0.2);
+  }
+  .style-swatch.active{
+    border-color: var(--maroon);
+    box-shadow: 0 0 0 2px var(--maroon) inset;
+  }
+  .settings-note{
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
   .nav-row{
     margin-top: 18px;
     display:flex;
@@ -384,8 +555,20 @@
       white-space:nowrap;
     }
     .tab.active{ transform:none; }
-    .page-frame{ padding: 18px 16px; }
+    .page-frame{ padding: 14px 12px; }
     select{ min-width: 0; flex:1; }
+    .book{ min-height: 0; }
+    .suspect-grid{
+      grid-auto-flow: row;
+      grid-template-rows: none;
+      grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+      overflow-x:hidden;
+      overflow-y:auto;
+    }
+    .suspect-card{ min-height: 36px; padding: 5px 6px; }
+    .suspect-card .name{ font-size: 11px; }
+    .suspect-card .num{ font-size: 8px; }
+    .case-text::first-letter{ font-size: 34px; }
   }
 </style>
 </head>
@@ -403,6 +586,7 @@
       <button class="tab" data-page="suspects">Suspects</button>
       <button class="tab" data-page="hints">Hints</button>
       <button class="tab" data-page="accuse">Accuse</button>
+      <button class="tab" data-page="settings">Settings</button>
     </nav>
 
     <div class="page-frame">
@@ -417,7 +601,7 @@
 
       <section class="page" id="page-suspects">
         <h2 class="page-title">The Suspects</h2>
-        <p class="suspect-note">Tap a name to cross it off the list as you eliminate it.</p>
+        <p class="suspect-note" id="suspectNote">Tap a name to cross it off the list as you eliminate it.</p>
         <div class="suspect-grid" id="suspectGrid"></div>
       </section>
 
@@ -436,6 +620,37 @@
           <button class="btn secondary" id="revealBtn">Reveal Solution</button>
         </div>
         <div class="verdict" id="verdict"></div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <h2 class="page-title">Settings</h2>
+        <p class="page-sub">Configure the next case, then apply to start fresh.</p>
+
+        <div class="settings-block">
+          <label class="settings-label">Difficulty</label>
+          <div class="pill-grid" id="difficultyGrid"></div>
+          <div class="custom-count-row" id="customCountRow" style="display:none;">
+            <label for="customCount">Custom count</label>
+            <input type="number" id="customCount" min="1" max="2000" value="10">
+            <span class="settings-note">1&ndash;2000 suspects</span>
+          </div>
+        </div>
+
+        <div class="settings-block">
+          <label class="settings-label">Name Mode</label>
+          <div class="pill-grid" id="nameModeGrid">
+            <button class="pill-btn active" data-mode="full">Full Names</button>
+            <button class="pill-btn" data-mode="first">First Names Only</button>
+          </div>
+          <p class="settings-note" id="nameModeNote"></p>
+        </div>
+
+        <div class="settings-block">
+          <label class="settings-label">Book Style</label>
+          <div class="style-grid" id="styleGrid"></div>
+        </div>
+
+        <button class="btn" id="applySettingsBtn">Apply &amp; Start New Case</button>
       </section>
 
       <div class="nav-row">
@@ -463,7 +678,10 @@
     "Mortimer","Clementine","Wendell","Beatrix","Horace","Adelaide","Frederick",
     "Genevieve","Leopold","Agatha","Nathaniel","Eleanora","Quentin","Marguerite",
     "Silas","Verity","Aubrey","Isadora","Ferdinand","Cassandra","Ezra","Wilhelmina",
-    "Godfrey","Ottoline","Ignatius","Vivienne","Peregrine","Evangeline","Tobias"
+    "Godfrey","Ottoline","Ignatius","Vivienne","Peregrine","Evangeline","Tobias",
+    "Rupert","Delphine","Cuthbert","Araminta","Sebastian","Lavinia","Montague",
+    "Philippa","Aloysius","Georgiana","Humphrey","Cressida","Thaddeus","Seraphina",
+    "Wilfred","Anthea","Crispin","Rosamund","Balthazar","Imogen","Desmond"
   ];
 
   const LAST_NAMES = [
@@ -473,7 +691,11 @@
     "Vanborough","Whitmore","Wyndham","Yardley","Ashcombe","Barrington","Colchester",
     "Dashwood","Elmsworth","Farnsworth","Gresham","Holloway","Ivensworth","Jarrow",
     "Kettleworth","Ludlow","Montfort","Norcliffe","Oakden","Pennington","Rutherford",
-    "Stanmore","Trevelyan","Uxbridge","Verrell","Wentworth"
+    "Stanmore","Trevelyan","Uxbridge","Verrell","Wentworth",
+    "Ainsworth","Burnley","Crompton","Dovecote","Everley","Fenwick","Goodwin",
+    "Haversham","Isley","Kingsford","Larkspur","Manningham","Northgate","Ormsby",
+    "Pallister","Quennell","Rosewood","Stourbridge","Thistlewood","Umberleigh",
+    "Vickersley","Woolstone","Ashvale","Broxton","Culverton"
   ];
 
   const LOCATIONS = [
@@ -519,55 +741,116 @@
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
   function countVowels(s){ return (s.toUpperCase().match(/[AEIOU]/g) || []).length; }
   function hasDoubleLetter(s){ return /(.)\1/i.test(s); }
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+  function fullName(p){ return p.last ? (p.first + " " + p.last) : p.first; }
 
   const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   /* ---------------------------------------------------------------- */
-  /* Case generation                                                    */
+  /* Difficulty & style presets                                        */
   /* ---------------------------------------------------------------- */
-  const SUSPECT_COUNT = 14;
+  const DIFFICULTIES = [
+    { id:'peaceful', label:'Peaceful', count:10 },
+    { id:'easy',     label:'Easy',     count:20 },
+    { id:'medium',   label:'Medium',   count:50 },
+    { id:'hard',     label:'Hard',     count:150 },
+    { id:'extreme',  label:'Extreme',  count:500 },
+    { id:'custom',   label:'Custom',   count:null }
+  ];
 
-  function generateSuspects(){
-    const firsts = shuffle(FIRST_NAMES).slice(0, SUSPECT_COUNT + 1);
-    const lasts = shuffle(LAST_NAMES).slice(0, SUSPECT_COUNT + 1);
-    const victim = { first: firsts[SUSPECT_COUNT], last: lasts[SUSPECT_COUNT] };
-    const suspects = [];
-    for(let i=0;i<SUSPECT_COUNT;i++){
-      suspects.push({
-        id: i,
-        first: firsts[i],
-        last: lasts[i],
-        full: firsts[i] + " " + lasts[i]
-      });
-    }
-    return { suspects, victim };
+  const THEMES = [
+    { id:'dossier',   label:'Classic Dossier',  paper:'#efe4c6', accent:'#6b1e23' },
+    { id:'textbook',  label:'Textbook',         paper:'#faf7f0', accent:'#1d3d6b' },
+    { id:'noir',      label:'Noir Film',        paper:'#1f1f1f', accent:'#b91c1c' },
+    { id:'newspaper', label:'Newspaper',        paper:'#eee9e0', accent:'#8a1f1f' },
+    { id:'corkboard', label:'Corkboard',        paper:'#c9a06a', accent:'#a12a2a' },
+    { id:'terminal',  label:'Terminal',         paper:'#05130a', accent:'#3ddc61' },
+    { id:'gothic',    label:'Gothic Manuscript',paper:'#2a2018', accent:'#c9a34d' }
+  ];
+
+  const MAX_CUSTOM_COUNT = 2000;
+
+  let settings = {
+    difficulty: 'peaceful',
+    customCount: 10,
+    firstOnly: false,
+    theme: 'dossier'
+  };
+
+  function requestedCount(){
+    const d = DIFFICULTIES.find(x=>x.id===settings.difficulty);
+    if(d && d.count !== null) return d.count;
+    return clamp(Math.round(settings.customCount) || 1, 1, MAX_CUSTOM_COUNT);
   }
 
-  function buildPropertyDefs(){
+  /* ---------------------------------------------------------------- */
+  /* Case generation                                                    */
+  /* ---------------------------------------------------------------- */
+  function generateNamePairs(count, firstOnly){
+    if(firstOnly){
+      const maxAvail = FIRST_NAMES.length - 1;
+      const n = Math.min(count, maxAvail);
+      const firsts = shuffle(FIRST_NAMES).slice(0, n + 1);
+      const pairs = firsts.slice(0, n).map(f => ({ first:f, last:'' }));
+      const victim = { first: firsts[n], last:'' };
+      return { pairs, victim, effectiveCount:n };
+    }
+
+    const maxAvail = FIRST_NAMES.length * LAST_NAMES.length - 1;
+    const n = Math.min(count, maxAvail);
+
+    // Small counts: guarantee both first AND last names are each unique across the case.
+    if(n + 1 <= Math.min(FIRST_NAMES.length, LAST_NAMES.length)){
+      const firsts = shuffle(FIRST_NAMES).slice(0, n + 1);
+      const lasts = shuffle(LAST_NAMES).slice(0, n + 1);
+      const pairs = [];
+      for(let i=0;i<n;i++) pairs.push({ first:firsts[i], last:lasts[i] });
+      return { pairs, victim:{ first:firsts[n], last:lasts[n] }, effectiveCount:n };
+    }
+
+    // Larger counts: sample unique first+last combinations from the full cartesian product.
+    const used = new Set();
+    const pairs = [];
+    let guard = 0;
+    while(pairs.length < n + 1 && guard < (n + 1) * 20){
+      guard++;
+      const f = pick(FIRST_NAMES);
+      const l = pick(LAST_NAMES);
+      const key = f + "|" + l;
+      if(used.has(key)) continue;
+      used.add(key);
+      pairs.push({ first:f, last:l });
+    }
+    const victim = pairs.pop();
+    return { pairs, victim, effectiveCount: pairs.length };
+  }
+
+  function generateSuspects(){
+    const requested = requestedCount();
+    const { pairs, victim, effectiveCount } = generateNamePairs(requested, settings.firstOnly);
+    const suspects = pairs.map((p, i) => ({
+      id: i,
+      first: p.first,
+      last: p.last,
+      full: fullName(p)
+    }));
+    victim.full = fullName(victim);
+    return { suspects, victim, requested, effectiveCount };
+  }
+
+  function buildPropertyDefs(firstOnly){
     const defs = [
       {
         get: s => s.first[0].toUpperCase(),
         phrase: v => `Names that begin with the letter "${v}" are not the guilty party.`
       },
       {
-        get: s => s.last[0].toUpperCase(),
-        phrase: v => `Surnames that begin with the letter "${v}" are not the guilty party.`
-      },
-      {
         get: s => s.first.slice(-1).toUpperCase(),
         phrase: v => `First names ending in the letter "${v}" are not the guilty party.`
       },
       {
-        get: s => s.last.slice(-1).toUpperCase(),
-        phrase: v => `Surnames ending in the letter "${v}" are not the guilty party.`
-      },
-      {
         get: s => s.first.length,
         phrase: v => `A first name of exactly ${v} letters does not belong to the guilty party.`
-      },
-      {
-        get: s => s.last.length,
-        phrase: v => `A surname of exactly ${v} letters does not belong to the guilty party.`
       },
       {
         get: s => countVowels(s.first + s.last),
@@ -580,6 +863,22 @@
           : `A name with no repeated letter in a row does not belong to the guilty party.`
       }
     ];
+    if(!firstOnly){
+      defs.push(
+        {
+          get: s => s.last[0].toUpperCase(),
+          phrase: v => `Surnames that begin with the letter "${v}" are not the guilty party.`
+        },
+        {
+          get: s => s.last.slice(-1).toUpperCase(),
+          phrase: v => `Surnames ending in the letter "${v}" are not the guilty party.`
+        },
+        {
+          get: s => s.last.length,
+          phrase: v => `A surname of exactly ${v} letters does not belong to the guilty party.`
+        }
+      );
+    }
     ALPHABET.forEach(L=>{
       defs.push({
         get: s => (s.first + s.last).toUpperCase().includes(L),
@@ -594,11 +893,11 @@
   function generateHints(suspects, culprit){
     let remaining = suspects.slice();
     const hints = [];
-    const propDefs = buildPropertyDefs();
+    const propDefs = buildPropertyDefs(settings.firstOnly);
     let pool = shuffle(propDefs);
     let poolIdx = 0;
     let passes = 0;
-    const maxPasses = 4;
+    const maxPasses = 12;
 
     while(remaining.length > 1 && passes < maxPasses){
       if(poolIdx >= pool.length){
@@ -629,9 +928,9 @@
     const motive = pick(MOTIVE_WHISPERS);
 
     const templates = [
-      `${victim.first} ${victim.last} was found lifeless at ${location}, ${time}. The cause, it soon became clear, was ${weapon}. It was ${discoverer} who raised the alarm. Among the ${suspectsCount} guests under this roof that night, one is not who they claim to be &mdash; and whispers already speak of ${motive}.`,
-      `The body of ${victim.first} ${victim.last} was discovered at ${location} ${time}, the victim of ${weapon}. ${discoverer[0].toUpperCase()+discoverer.slice(1)} made the grim discovery. With ${suspectsCount} names in the household ledger, the local inspector suspects ${motive} lies at the heart of it.`,
-      `It was ${discoverer} who found ${victim.first} ${victim.last} at ${location}, ${time} &mdash; killed by ${weapon}. Of the ${suspectsCount} souls who might have done it, only one is guilty, and rumour already points toward ${motive}.`
+      `${victim.full} was found lifeless at ${location}, ${time}. The cause, it soon became clear, was ${weapon}. It was ${discoverer} who raised the alarm. Among the ${suspectsCount} names under suspicion, one is not who they claim to be &mdash; and whispers already speak of ${motive}.`,
+      `The body of ${victim.full} was discovered at ${location} ${time}, the victim of ${weapon}. ${discoverer[0].toUpperCase()+discoverer.slice(1)} made the grim discovery. With ${suspectsCount} names in the household ledger, the local inspector suspects ${motive} lies at the heart of it.`,
+      `It was ${discoverer} who found ${victim.full} at ${location}, ${time} &mdash; killed by ${weapon}. Of the ${suspectsCount} names under suspicion, only one is guilty, and rumour already points toward ${motive}.`
     ];
     return { text: pick(templates), location, time, weapon, discoverer, motive };
   }
@@ -649,7 +948,7 @@
   let state = null;
 
   function newCase(){
-    const { suspects, victim } = generateSuspects();
+    const { suspects, victim, requested, effectiveCount } = generateSuspects();
     const culprit = pick(suspects);
     const hints = generateHints(suspects, culprit);
     const caseInfo = buildCaseText(victim, culprit, suspects.length);
@@ -659,6 +958,8 @@
       culprit,
       hints,
       caseInfo,
+      requested,
+      effectiveCount,
       caseNo: randomCaseNumber(),
       eliminated: new Set(),
       solved: false
@@ -676,26 +977,37 @@
     document.getElementById('caseText').innerHTML = state.caseInfo.text;
     const facts = document.getElementById('caseFacts');
     facts.innerHTML = `
-      <div><span>Victim</span>${state.victim.first} ${state.victim.last}</div>
+      <div><span>Victim</span>${state.victim.full}</div>
       <div><span>Location</span>${cap(state.caseInfo.location)}</div>
       <div><span>Time</span>${cap(state.caseInfo.time)}</div>
       <div><span>Means</span>${cap(state.caseInfo.weapon)}</div>
       <div><span>Suspects</span>${state.suspects.length} persons of interest</div>
     `;
 
+    const note = document.getElementById('suspectNote');
+    if(state.effectiveCount < state.requested){
+      note.textContent = `Requested ${state.requested} suspects, but only ${state.effectiveCount} unique names were available (increase the name pool or turn off First Names Only for more room). Tap a name to cross it off.`;
+      note.classList.add('clamp-note');
+    } else {
+      note.textContent = 'Tap a name to cross it off the list as you eliminate it.';
+      note.classList.remove('clamp-note');
+    }
+
     const grid = document.getElementById('suspectGrid');
     grid.innerHTML = '';
+    const frag = document.createDocumentFragment();
     state.suspects.forEach((s, i) => {
       const card = document.createElement('div');
       card.className = 'suspect-card' + (state.eliminated.has(s.id) ? ' eliminated' : '');
-      card.innerHTML = `<span class="num">FILE ${String(i+1).padStart(2,'0')}</span>${s.full}`;
+      card.innerHTML = `<span class="num">${String(i+1).padStart(3,'0')}</span><span class="name">${s.full}</span>`;
       card.addEventListener('click', () => {
         if(state.eliminated.has(s.id)) state.eliminated.delete(s.id);
         else state.eliminated.add(s.id);
-        render();
+        card.classList.toggle('eliminated');
       });
-      grid.appendChild(card);
+      frag.appendChild(card);
     });
+    grid.appendChild(frag);
 
     const hintList = document.getElementById('hintList');
     hintList.innerHTML = '';
@@ -724,7 +1036,7 @@
   /* ---------------------------------------------------------------- */
   /* Page navigation                                                    */
   /* ---------------------------------------------------------------- */
-  const PAGES = ['case','suspects','hints','accuse'];
+  const PAGES = ['case','suspects','hints','accuse','settings'];
   let currentPage = 'case';
 
   function goToPage(p){
@@ -765,7 +1077,7 @@
     verdict.classList.add('show');
     if(chosenId === state.culprit.id){
       verdict.classList.add('correct');
-      verdict.innerHTML = `<h3>Case Closed</h3>The evidence holds. ${state.culprit.first} ${state.culprit.last} confesses at last, undone by ${state.caseInfo.motive}. Justice is served at ${cap(state.caseInfo.location)}.`;
+      verdict.innerHTML = `<h3>Case Closed</h3>The evidence holds. ${state.culprit.full} confesses at last, undone by ${state.caseInfo.motive}. Justice is served at ${cap(state.caseInfo.location)}.`;
       state.solved = true;
     } else {
       verdict.classList.remove('correct');
@@ -777,14 +1089,73 @@
   document.getElementById('revealBtn').addEventListener('click', () => {
     const verdict = document.getElementById('verdict');
     verdict.classList.add('show', 'correct');
-    verdict.innerHTML = `<h3>Solution</h3>The guilty party was <strong>${state.culprit.first} ${state.culprit.last}</strong>, driven by ${state.caseInfo.motive}.`;
+    verdict.innerHTML = `<h3>Solution</h3>The guilty party was <strong>${state.culprit.full}</strong>, driven by ${state.caseInfo.motive}.`;
   });
 
   document.getElementById('newCaseBtn').addEventListener('click', newCase);
 
   /* ---------------------------------------------------------------- */
+  /* Settings panel                                                     */
+  /* ---------------------------------------------------------------- */
+  function renderSettingsPanel(){
+    const diffGrid = document.getElementById('difficultyGrid');
+    diffGrid.innerHTML = '';
+    DIFFICULTIES.forEach(d => {
+      const btn = document.createElement('button');
+      btn.className = 'pill-btn' + (settings.difficulty === d.id ? ' active' : '');
+      btn.textContent = d.count !== null ? `${d.label} \u00b7 ${d.count}` : d.label;
+      btn.dataset.diff = d.id;
+      btn.addEventListener('click', () => {
+        settings.difficulty = d.id;
+        document.getElementById('customCountRow').style.display = d.id === 'custom' ? 'flex' : 'none';
+        renderSettingsPanel();
+      });
+      diffGrid.appendChild(btn);
+    });
+    document.getElementById('customCountRow').style.display = settings.difficulty === 'custom' ? 'flex' : 'none';
+
+    const modeGrid = document.getElementById('nameModeGrid');
+    modeGrid.querySelectorAll('.pill-btn').forEach(b => {
+      b.classList.toggle('active', (b.dataset.mode === 'first') === settings.firstOnly);
+    });
+    const maxFirstOnly = FIRST_NAMES.length - 1;
+    document.getElementById('nameModeNote').textContent = settings.firstOnly
+      ? `Limited to ${maxFirstOnly} unique first names.`
+      : `Full names allow up to ${FIRST_NAMES.length * LAST_NAMES.length - 1} unique combinations.`;
+
+    const styleGrid = document.getElementById('styleGrid');
+    styleGrid.innerHTML = '';
+    THEMES.forEach(t => {
+      const sw = document.createElement('div');
+      sw.className = 'style-swatch' + (settings.theme === t.id ? ' active' : '');
+      sw.innerHTML = `<div class="chip" style="background:${t.paper}; box-shadow: inset 0 0 0 3px ${t.accent};"></div>${t.label}`;
+      sw.addEventListener('click', () => {
+        settings.theme = t.id;
+        document.documentElement.setAttribute('data-theme', t.id);
+        renderSettingsPanel();
+      });
+      styleGrid.appendChild(sw);
+    });
+  }
+
+  document.getElementById('customCount').addEventListener('input', e => {
+    settings.customCount = clamp(parseInt(e.target.value, 10) || 1, 1, MAX_CUSTOM_COUNT);
+  });
+
+  document.getElementById('nameModeGrid').addEventListener('click', e => {
+    const btn = e.target.closest('.pill-btn');
+    if(!btn) return;
+    settings.firstOnly = btn.dataset.mode === 'first';
+    renderSettingsPanel();
+  });
+
+  document.getElementById('applySettingsBtn').addEventListener('click', newCase);
+
+  /* ---------------------------------------------------------------- */
   /* Init                                                               */
   /* ---------------------------------------------------------------- */
+  document.documentElement.setAttribute('data-theme', settings.theme);
+  renderSettingsPanel();
   newCase();
 
 })();
